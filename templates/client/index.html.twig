@@ -1,53 +1,95 @@
 {% extends "base.html.twig" %}
 {% block body %}
-	<div class="container offset-1">
-		<h1>
-			<p style="color:aqua; display:inline-block ">Liste des </p>
-			<p style="display:inline-block; color:chartreuse; ">Clients</p> 
-		</h1>
-		<div class="row">
-			<div class="col-md-6">
-				
-    		<!-- Modal -->
-				{# <button class="btn btn-primary" data-toggle="modal" data-target="#client">Nouveau client <i class="ti-plus"></i></button> #}
-				<a class="nav-link" href="{{path('deleteClient')}}" id="remove"><i class="fa fa-times"></i> Supprimer tous les clients <span
-					class="sr-only">(current)</span></a>
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Nom</th>
-							<th>Contact</th>
-						</tr>
-					</thead>
-					
-					<tbody>
-						{% for client in clients %}
-							<tr>
-								<td>{{client.id}}</td>
-								<td>{{client.nom}}</td>
-								<td>{{client.contact}}</td>
-								{# <td>
-									{# <button type="submit" class="btn btn-danger" id="removeOne">Supprimer</button> #}
-									{# <a class="btn_show_client btn btn-success" href="{{path('consulterClient',{id:client.id})}}"></i> Consulter</a>
-									<a class="btn_update_client btn btn-primary" href="{{path('consulterClient',{id:client.id})}}">Modifier</a>
-									<a class="removeOne btn btn-danger" href="{{path('deleteOneClient',{id:client.id})}}"></i> Supprimer</a>
-								</td> #}
-							</tr>
+<section class="content-wrapper" id="contact">
+	<div class="container px-4 px-lg-5">
+		<div class="row gx-4 gx-lg-5 justify-content-center">
 
-						{% else %}
-							<tr>
-								<td colspan="3" class="text-center">{{'Tableau vide ...'}}</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
+			<div class="col-lg-8 col-xl-6 text-center">
+
+				<hr class="divider" />
 			</div>
-			{# end col #}
 		</div>
-		{# end row #}
+		<div class="row gx-4 gx-lg-5 justify-content-center mb-5">
+			<div class="col-lg-10">
+
+				<div class="card">
+					{# <div class="card-header">
+
+						<a href="" class="btn btn-warning"> <i class="fa fa-pen"></i>
+							Modifier</a>
+
+						<a href="" class="btn btn-danger"> <i class="fa fa-trash"></i>
+							Supprimer</a>
+
+					</div> #}
+					<div class="card-header">
+						<form method="get" action="">
+							<div class="form-row align-items-center">
+								<div class="col-auto">
+									<label class="sr-only" for="inlineFormInput">Name</label>
+									<input type="text" name="keyName" class="form-control mb-2" id="inlineFormInput"
+										placeholder="Mot clé">
+								</div>
+
+								<div class="col-auto">
+									<button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i>
+										Rechercher</button>
+								</div>
+								<div class="col-auto">
+
+									<a th:href="" class="btn btn-info mb-2"><i class="fa fa-print"></i> Imprimer</a>
+								</div>
+							</div>
+						</form>
+
+					</div>
+					<div class="card-header">
+
+					</div>
+					<div class="card-body">
+						<table class="table table-bordered">
+
+							<thead>
+								<tr>
+									<th>Nom</th>
+									<th>Email</th>
+									<th>Contact</th>
+									<th>Adresse</th>
+
+								</tr>
+							</thead>
+
+							<tbody>
+								{% for row in clients %}
+								<tr>
+									<td>{{row.nom}}</td>
+									<td>{{row.email}}</td>
+									<td>{{row.contact}}</td>
+									<td>{{row.adresse}}</td>
+
+								</tr>
+
+								{% else %}
+								<tr>
+									<td colspan="3">La liste est vide ...</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+
+							<tfoot>
+
+							</tfoot>
+
+						</table>
+					</div>
+					<div class="card-footer">
+
+					</div>
+				</div>
+			</div>
+		</div>
 
 	</div>
-	<br>
-	
-{% endblock %}
+</section>
+
+{% endblock body %}

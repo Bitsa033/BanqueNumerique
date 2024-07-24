@@ -1,0 +1,64 @@
+{% extends "base2.html.twig" %}
+{% block body %}
+
+<body onload="window.print()">
+
+    <section class="content-wrapper" id="contact">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+
+            </div>
+            <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
+                <div class="col-lg-10">
+
+                    <div class="card">
+
+                        <div class="card-header">
+                            Relevé des Transactions Bancaires <strong> | Titulaire: </strong> {{nom_client}}
+                        </div>
+                        <div class="card-header">
+                            <h5 th:text="${nb} + ' Régions enregistrées'"></h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+
+                                <thead>
+                                    <tr>
+                                        <th>Transaction</th>
+                                        <th>Date</th>
+                                        <th>Montant</th>
+                                        <th>Compte</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for row in transactions %}
+                                    <tr>
+                                        <td>{{row.nom}}</td>
+                                        <td>{{row.dateT|date("m/d/Y h:m:s")}}</td>
+                                        <td>{{row.solde}} FCFA</td>
+                                        <td>{{row.numeroCompte}}</td>
+
+                                    </tr>
+
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="3">La liste est vide ...</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+{% endblock body %}

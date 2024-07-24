@@ -10,125 +10,98 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BackController extends CompteService
 {
-    /**
-     * lien pour afficher tous les comptes
-     * @Route("/", name="comptes")
-     */
-    public function listeComptes(): Response
-    {
-        return $this->json(['data'=>$this->getRepo()->findAll()]);
-    }
+    public $success = "";
+    public $error = "";
+    public $invalid_input = "";
 
-    /**
-     * lien pour ajouter une somme dans le compte
-     * @Route("depotCompte", name="depotCompte")
-     */
     function depotCompte($id_compte, $montant)
     {
-        if (!empty($id_compte) && !empty($montant)) { 
+        if (!empty($id_compte) && !empty($montant)) {
+            $this->crediter($id_compte, $montant);
 
-            $id_compte_db=$this->getId($id_compte);
+            // return $this->json([
+            //     'message' => 'Ok, Dépot effectué avec success',
+            //     'icon' => 'success',
+            // ]);
+            return $this->success = 'Ok, Dépot effectué avec success';
+        } else {
 
-            if (!$id_compte_db) {
-
-                return $this->json([
-                    'message'=>'Erreur, Ce compte n\'existe pas dans notre base de données ! ',
-                    'icon'=>'error',
-                ]);
-            }
-            
-            else {
-
-                $this->crediter($id_compte_db,$montant);
-                
-                return $this->json([
-                    'message'=>'Ok, Dépot effectué avec success',
-                    'icon'=>'success',
-                ]);
-
-                
-            }
-
-        }
-        else {
-
-            return $this->json([
-                'message'=>'Erreur, Votre formulaire ne doit pas etre vide... Remplissez-le',
-                'icon'=>'error'
-            ]);
+            // return $this->json([
+            //     'message' => 'Erreur, Votre formulaire ne doit pas etre vide... Remplissez-le',
+            //     'icon' => 'error'
+            // ]);
+            return $this->invalid_input = 'Erreur, Votre formulaire ne doit pas etre vide... Remplissez-le';
         }
     }
 
-    /**
-     * lien pour ajouter une somme dans le compte
-     * @Route("retraitCompte", name="retraitCompte")
-     */
-    function retraitCompte($id_compte,$montant)
+    function retraitCompte($id_compte, $montant)
     {
-        
-        //dd($solde_courant);
-        if (!empty($id_compte) && !empty($montant)) { 
 
-            $id_compte_db=$this->getRepo()->find($id_compte);
-            $solde_courant=$id_compte_db->getSolde();
+        if (!empty($id_compte) && !empty($montant)) {
+            $this->debiter($id_compte, $montant);
 
-            if (!$id_compte_db) {
+            // return $this->json([
+            //     'message' => 'Ok, Dépot effectué avec success',
+            //     'icon' => 'success',
+            // ]);
+            return $this->success = 'Ok, Retrait effectué avec success';
+        } else {
 
-                return $this->json([
-                    'message'=>'Erreur, Ce compte n\'existe pas dans notre base de données ! ',
-                    'icon'=>'error',
-                ]);
-            }
-
-            elseif ($solde_courant<$montant) {
-
-                return $this->json([
-                    'message'=>'Erreur, Votre solde est insuffisant, veuillez recharger votre compte et recommencez ! ',
-                    'icon'=>'error',
-                ]);
-            }
-            
-            else {
-                $this->debiter($id_compte_db,$montant);
-                
-                return $this->json([
-                    'message'=>'Ok, Retrait effectué avec success',
-                    'icon'=>'success',
-                ]);
-                
-            }
-
-        }
-        else {
-            return $this->json([
-                'message'=>'Erreur, Votre formulaire ne doit pas etre vide... Remplissez-le',
-                'icon'=>'error'
-            ]);
+            // return $this->json([
+            //     'message' => 'Erreur, Votre formulaire ne doit pas etre vide... Remplissez-le',
+            //     'icon' => 'error'
+            // ]);
+            return $this->invalid_input = 'Erreur, Votre formulaire ne doit pas etre vide... Remplissez-le';
         }
     }
 
-    /**
-     * lien pour transferer de l'argent d'un compte à un autre
-     * @Route("virerMontant", name="virerMontant")
-     */
-    function virerArgent(Request $request, SessionInterface $sessionInterface)
+    function virerArgent($compte_debiteur, $montant, $compte_receveur)
     {
-        $id_compte_courant = $sessionInterface->get("id_compte_courant");
-        $post_montant = $request->request->get('montant');
-        $post_num_compte_receveur = $request->request->get('num_compte_receveur');
-        $compteReceveur_array = $this->getRepo()->findBy(['numero' => $post_num_compte_receveur]);
+        if (!empty($compte_debiteur) && !empty($montant) && !empty($compte_receveur)) {
 
-        foreach ($compteReceveur_array as $key => $value) {
+            $this->virerMontant($compte_debiteur, $montant, $compte_receveur);
 
-            $id_compte_rec = $value->getId();
-            $this->virerMontant($id_compte_courant, $post_montant, $id_compte_rec);
+            return $this->success = 'Ok, Transfert effectué avec success';
+        } else {
+
+            // return $this->json([
+            //     'message' => 'Erreur, Votre formulaire ne doit pas etre vide... Remplissez-le',
+            //     'icon' => 'error'
+            // ]);
+            return $this->invalid_input = 'Erreur, Votre formulaire ne doit pas etre vide... Remplissez-le';
         }
-
-        return $this->json([
-            'message'=>'Ok, Transfert effectué avec success',
-            'icon'=>'success',
-        ]);
-
     }
-    
+
+    function gelerCompte($numero_compte)
+    {
+        if (!empty($numero_compte)) {
+            $this->desactiver($numero_compte);
+
+            return $this->success = 'Ok, Le compte a été bloqué avec success';
+        } else {
+
+            // return $this->json([
+            //     'message' => 'Erreur, Votre formulaire ne doit pas etre vide... Remplissez-le',
+            //     'icon' => 'error'
+            // ]);
+            return $this->invalid_input = 'Erreur, Votre formulaire ne doit pas etre vide... Remplissez-le';
+        }
+    }
+
+    function activerCompte($numero_compte)
+    {
+        if (!empty($numero_compte)) {
+
+            $this->activer($numero_compte);
+
+            return $this->success = 'Ok, Le compte a été activé avec success';
+        } else {
+
+            // return $this->json([
+            //     'message' => 'Erreur, Votre formulaire ne doit pas etre vide... Remplissez-le',
+            //     'icon' => 'error'
+            // ]);
+            return $this->invalid_input = 'Erreur, Votre formulaire ne doit pas etre vide... Remplissez-le';
+        }
+    }
 }

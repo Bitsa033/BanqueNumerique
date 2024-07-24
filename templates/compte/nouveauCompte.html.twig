@@ -1,35 +1,146 @@
 {% extends "base.html.twig" %}
 {% block body %}
-<div class="row">
-    <div class="col-md-5 offset-3">
-        <form autocomplete="off" method="post" id="form" action="{{path('nouveauCompteB')}}">
-            <div class="form-group">
-                <label for="id_debit">Nom complet du Client</label>
-                <input type="text" name="nom" class="form-control" id="nom" >
-                <div class="validate"></div>
+<section class="content-wrapper">
+    <br>
+
+    <div class="row">
+        <div class="col-md-12">
+            {% for message in app.flashes('statut_off') %}
+            <div class="alert alert-danger container text-center col-md-5 offset-2" style="margin-top: 2%;">
+                {{ message }}
             </div>
-            <div class="form-group">
-                <label for="credit">Numero de télephone</label>
-                <input type="text" name="contact" class="form-control" id="contact" required>
-                <div class="validate"></div>
+            {% endfor %}
+
+            {% for message in app.flashes('success') %}
+            <div class="alert alert-success container text-center col-md-5 offset-2">
+                {{ message }}
             </div>
-        
-            <div class="form-group">
-                <label for="somme">Adress / Domicile</label>
-                <input type="text" name="adresse" class="form-control" id="adresse" required>
-                <div class="validate"></div>
-            </div>
-        
-            <div class="loading"></div>
-            <div class="error-message"></div>
-            <div class="message"></div>
-        
-            <button type="submit" class="btn btn-primary">Créer le compte</button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Femer</button>
-        </form>
+            {% endfor %}
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-md-5 offset-2 alert alert-info">
+            <p class="h3">Nouveau Client</p>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-5 offset-2">
+
+            <form autocomplete="off" method="post" id="form" action="{{path('nouveauCompteB')}}">
+                <div class="form-group">
+                    <label for="">Nature du compte</label>
+                    <select type="text" name="type" class="form-control" id="adresse" required>
+                        {% for row in type_compte %}
+                        <option value="{{row.id}}">{{row.nom}}</option>
+                        {% else %}
+
+                        {% endfor %}
+                    </select>
+                    <div class="validate"></div>
+                </div>
+
+                <div class="loading"></div>
+                <div class="error-message"></div>
+                <div class="message"></div>
+
+                <div class="form-group">
+                    <label for="">Nom complet du Client</label>
+                    <input type="text" name="nom" class="form-control" id="nom">
+                    <div class="validate"></div>
+                </div>
+                <div class="form-group">
+                    <label for="">Email</label>
+                    <input type="text" name="email" class="form-control" id="nom">
+                    <div class="validate"></div>
+                </div>
+                <div class="form-group">
+                    <label for="">Numero de télephone</label>
+                    <input type="text" name="contact" class="form-control" id="contact" required>
+                    <div class="validate"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="">Adress / Pays</label>
+                    <input type="text" name="pays" class="form-control" id="adresse" required>
+                    <div class="validate"></div>
+                </div>
+
+                <div class="loading"></div>
+                <div class="error-message"></div>
+                <div class="message"></div>
+
+                <div class="form-group">
+                    <label for="">Adress / Ville</label>
+                    <input type="text" name="ville" class="form-control" id="adresse" required>
+                    <div class="validate"></div>
+                </div>
+
+                <div class="loading"></div>
+                <div class="error-message"></div>
+                <div class="message"></div>
+
+                <div class="form-group">
+                    <label for="">Adress / Quartier</label>
+                    <input type="text" name="quartier" class="form-control" id="adresse" required>
+                    <div class="validate"></div>
+                </div>
+
+                <div class="loading"></div>
+                <div class="error-message"></div>
+                <div class="message"></div>
+
+                <button type="submit" class="btn btn-primary">Créer le compte</button>
+
+            </form>
+
+        </div>
 
     </div>
-</div>
+    <br>
+    <div class="row">
+        <div class="col-md-5 offset-2 alert alert-info">
+            <p class="h3">Ancien Client</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5 offset-2">
+
+            <form autocomplete="off" method="post" id="form" action="{{path('nouveauCompteB2')}}">
+                <div class="form-group">
+                    <label for="">Nature du compte</label>
+                    <select type="text" name="type" class="form-control" id="adresse" required>
+                        {% for row in type_compte %}
+                        <option value="{{row.id}}">{{row.nom}}</option>
+                        {% else %}
+
+                        {% endfor %}
+                    </select>
+                    <div class="validate"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="">Nom complet du Client</label>
+                    <select type="text" name="client" class="form-control" id="adresse" required>
+                        {% for row in clients %}
+                        <option value="{{row.id}}">{{row.nom}}</option>
+                        {% else %}
+
+                        {% endfor %}
+                    </select>
+                    <div class="validate"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Créer le compte</button>
+
+            </form>
+            <br><br>
+        </div>
+
+    </div>
+</section>
 
 
 {% endblock body %}

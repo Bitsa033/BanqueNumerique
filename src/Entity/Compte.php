@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CompteRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,7 +20,7 @@ class Compte
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,unique=true)
      */
     private $numero;
 
@@ -28,15 +30,36 @@ class Compte
     private $solde;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $dateT;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Client::class, inversedBy="compte", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="comptes", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false,unique=false)
      */
     private $client;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $statut;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeCompte::class, inversedBy="comptes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $type;
+
+    /**
+     * @ORM\OneToMany(targetEntity=HistoriqueT::class, mappedBy="compte")
+     */
+    private $historiqueTs;
+
+    /**
+     * @ORM\Column(type="string", length=3, unique=true)
+     */
+    private $rib;
+
+    public function __construct()
+    {
+        $this->historiqueTs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -67,18 +90,6 @@ class Compte
         return $this;
     }
 
-    public function getDateT(): ?\DateTimeInterface
-    {
-        return $this->dateT;
-    }
-
-    public function setDateT(\DateTimeInterface $dateT): self
-    {
-        $this->dateT = $dateT;
-
-        return $this;
-    }
-
     public function getClient(): ?Client
     {
         return $this->client;
@@ -87,6 +98,72 @@ class Compte
     public function setClient(Client $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $Statut): self
+    {
+        $this->statut = $Statut;
+
+        return $this;
+    }
+
+    public function getType(): ?TypeCompte
+    {
+        return $this->type;
+    }
+
+    public function setType(?TypeCompte $Type): self
+    {
+        $this->type = $Type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HistoriqueT>
+     */
+    public function getHistoriqueTs(): Collection
+    {
+        return $this->historiqueTs;
+    }
+
+    public function addHistoriqueT(HistoriqueT $historiqueT): self
+    {
+        if (!$this->historiqueTs->contains($historiqueT)) {
+            $this->historiqueTs[] = $historiqueT;
+            $historiqueT->setCompte($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistoriqueT(HistoriqueT $historiqueT): self
+    {
+        if ($this->historiqueTs->removeElement($historiqueT)) {
+            // set the owning side to null (unless already changed)
+            if ($historiqueT->getCompte() === $this) {
+                $historiqueT->setCompte(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRib(): ?string
+    {
+        return $this->rib;
+    }
+
+    public function setRib(string $rib): self
+    {
+        $this->rib = $rib;
 
         return $this;
     }

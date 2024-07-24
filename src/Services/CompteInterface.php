@@ -1,15 +1,16 @@
 <?php
+
 namespace App\Services;
 
-interface CompteInterface{
+interface CompteInterface
+{
 
-    function creer();
-    function crediter($numeroCompte,$montant);
-    function debiter($numeroCompte,$montant);
-    function virerMontant($numeroCompteDebiteur,$montant,$numeroCompteCrediteur);
-    function consulter($numeroCompte);
+    function creerHistorique($nomTransaction, $montant, $numero_compte, $titulaire);
+    function crediter($numeroCompte, $montant);
+    function debiter($numeroCompte, $montant);
+    function virerMontant($numeroCompteDebiteur, $montant, $numeroCompteCrediteur);
+
     function supprimer($numeroCompte);
     function activer($numeroCompte);
     function desactiver($numeroCompte);
-
 }

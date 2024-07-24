@@ -18,7 +18,7 @@ class Client
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,unique=true)
      */
     private $nom;
 
@@ -28,9 +28,19 @@ class Client
     private $contact;
 
     /**
-     * @ORM\OneToOne(targetEntity=Compte::class, mappedBy="client", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Compte::class, mappedBy="client", cascade={"persist", "remove"})
      */
     private $compte;
+
+    /**
+     * @ORM\Column(type="string", length=255,unique=true)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $adresse;
 
     public function getId(): ?int
     {
@@ -74,6 +84,30 @@ class Client
         }
 
         $this->compte = $compte;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }

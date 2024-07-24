@@ -48,40 +48,25 @@ class CompteRepository extends ServiceEntityRepository
         }
     }
 
-    // public function connection_to_databse(){
-
-    //     try {
-    //         $pdo=new \PDO('mysql:host=localhost;dbname=gnu','root','');
-    //     } catch (Exception $th) {
-    //         die( $th->getMessage());
-    //     }
-
-    //     return $pdo;
-    // }
-
-    public function getIdByNumero($numero)
+    public function getIdByNumeroCompte($value)
     {
-        
-        
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.numero = :val')
+            ->setParameter('val', $value)
+            ->orderBy('c.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
-    public function retirer(Compte $compte,$somme)
+    public function findAllByStatut($value)
     {
-        $conn = $this->_em->getConnection();
-        $sql = '
-            update compte set solde = solde - :somme where id= :compte
-        ';
-        $stmt = $conn->prepare($sql);
-        $stmt->executeQuery([
-            'compte'=>$compte->getId(),
-            'somme'=>$somme
-        ]);
-
-        //$resultat=$stmt->fetchAll();
-
-        // returns an array of arrays (i.e. a raw data set)
-        //return $resultat;
-        
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.statut = :val')
+            ->setParameter('val', $value)
+            ->orderBy('c.id', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     // /**
@@ -101,15 +86,13 @@ class CompteRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Compte
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+
+    // public function findOneBySomeField($value): ?Compte
+    // {
+    //     return $this->createQueryBuilder('c')
+    //         ->andWhere('c.numero = :val')
+    //         ->setParameter('val', $value)
+    //         ->getQuery()
+    //         ->getOneOrNullResult();
+    // }
 }

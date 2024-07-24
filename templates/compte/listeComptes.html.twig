@@ -1,38 +1,109 @@
 {% extends "base.html.twig" %}
 {% block body %}
+<section class="content-wrapper" id="contact">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
 
-<div class="row">
-    <div class="col-md-8 offset-1">
-        <br>
-        <a class=" btn btn-primary" href="{{path('nouveauCompte')}}">Nouveau Compte</a>
-        <br><br>
-        <table class="table">
-            <tr>
-                <th>Compte n°</th>
-                <th>Solde</th>
-                <th>Titulaire</th>
-                <th>Actions</th>
-            </tr>
-            {% for row in comptes %}
-            <tr>
-                <td>{{row.numero}}</td>
-                <td>{{row.solde}} FCFA</td>
-                <td>{{row.client.nom}}</td>
-                <td style="width: 525px;">
-                    <a class=" btn btn-warning" href="{{path('crediterCompte',{id:row.id})}}">Créditer le compte</a>
-                    <a class=" btn btn-info" href="{{path('debiterCompte',{id:row.id})}}">Débiter le compte</a>
-                    <a class=" btn btn-dark" href="{{path('transfererArgent',{id:row.id})}}">Transférer de l'argent</a>
-                </td>
-            </tr>
-                
-            {% else %}
-            <tr>
-                <td colspan="3">La lite est vide ...</td>
-            </tr> 
-            {% endfor %}
-        </table>
+            <div class="col-lg-8 col-xl-6 text-center">
+
+                <hr class="divider" />
+            </div>
+        </div>
+        <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
+            <div class="col-lg-10">
+
+                <div class="card">
+                    <div class="card-header">
+                        <a href="{{path('nouveauCompte')}}" class="btn btn-primary"><i class="fa fa-plus"></i> Nouveau
+                        </a>
+
+                        <a class=" btn btn-warning" href="{{path('crediterCompte')}}"> <i class="fa fa-plus"></i>
+                            Créditer</a>
+                        <a class=" btn btn-info" href="{{path('debiterCompte')}}"> <i class="fa fa-plus"></i> Débiter
+                        </a>
+                        <a class=" btn btn-success" href="{{path('transfererArgent')}}"> <i class="fa fa-plus"></i>
+                            Virement</a>
+                        <a class=" btn btn-dark" href="{{path('bloquerCompte')}}"> <i class="fa fa-lock"></i>
+                            Geler</a>
+                        <a class=" btn btn-primary" href="{{path('activerCompte')}}"> <i class="fa fa-lock-open"></i>
+                            Activer</a>
+
+
+                    </div>
+                    <div class="card-header">
+                        <form method="get" action="">
+                            <div class="form-row align-items-center">
+                                <div class="col-auto">
+                                    <label class="sr-only" for="inlineFormInput"></label>
+                                    <input type="text" name="keyName" class="form-control mb-2" id="inlineFormInput"
+                                        placeholder="Mot clé">
+                                </div>
+
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i>
+                                        Rechercher</button>
+                                </div>
+                                <div class="col-auto">
+
+                                    <a href="{{path('imprimer_compte_menu')}}" class="btn btn-info mb-2"><i
+                                            class="fa fa-print"></i> Imprimer</a>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="card-header">
+                        <h5 th:text="${nb} + ' Régions enregistrées'"></h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+
+                            <thead>
+                                <tr>
+                                    <th>Compte</th>
+                                    <th>Solde</th>
+                                    <th>Nature</th>
+                                    <th>Statut</th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for row in comptes %}
+                                <tr>
+                                    <td>{{row.numero}}</td>
+                                    <td>{{row.solde}} FCFA</td>
+                                    <td>{{row.type.nom}}</td>
+                                    {% if row.statut==1 %}
+                                    <td>Actif</td>
+                                    {% elseif row.statut==0 %}
+                                    <td>Bloqué</td>
+                                    {% endif %}
+
+
+                                </tr>
+
+                                {% else %}
+                                <tr>
+                                    <td colspan="3">La liste est vide ...</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+                            <tfoot>
+
+                            </tfoot>
+
+                        </table>
+                    </div>
+                    <div class="card-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-</div>
-
+</section>
 
 {% endblock body %}

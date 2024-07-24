@@ -1,0 +1,50 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<section class="content-wrapper">
+    <div class="row">
+
+        {% for message in app.flashes('statut_off') %}
+        <div class="alert alert-danger container text-center col-md-5 offset-3" style="margin-top: 2%;">
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-success container text-center col-md-5 offset-3">
+            {{ message }}
+        </div>
+        {% endfor %}
+        <div class="col-md-5 offset-3">
+
+            <form autocomplete="off" method="post" id="form" action="">
+                <div class="form-group">
+                    <label for="">Nature de l'impression</label>
+                    <select type="text" name="option_impression" class="form-control" id="adresse" required>
+                        <option value="releve_bancaire">Relevé des Comptes Bancaire</option>
+                        <option value="releve_transactions">Relevé des Transactions</option>
+                    </select>
+                    <div class="validate"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="">Nom complet du Client</label>
+                    <select type="text" name="client" class="form-control" id="adresse" required>
+                        {% for row in clients %}
+                        <option value="{{row.id}}">{{row.nom}}</option>
+                        {% else %}
+
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Suivant</button>
+
+            </form>
+
+        </div>
+
+    </div>
+</section>
+
+
+{% endblock body %}

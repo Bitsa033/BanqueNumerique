@@ -1,0 +1,9 @@
+{
+    "intelephense.files.associations": [
+        "*.php",
+        "*.phtml"
+    ],
+    "files.associations": {
+        "html": "twig"
+    }
+}

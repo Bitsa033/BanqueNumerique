@@ -2,6 +2,10 @@
 
 namespace App\Services;
 
+use App\Repository\ClientRepository;
+use App\Repository\CompteRepository;
+use App\Repository\HistoriqueTRepository;
+use App\Repository\TypeCompteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DataBaseService extends AbstractController
@@ -9,7 +13,23 @@ class DataBaseService extends AbstractController
 
     protected $table;
     protected $repo;
+    protected $compte_repo;
+    protected $client_repo;
+    protected $histo_repo;
+    protected $type_c_repo;
     protected $db;
+
+    public function __construct(
+        CompteRepository $compteRepository,
+        ClientRepository $clientRepository,
+        HistoriqueTRepository $historiqueTRepository,
+        TypeCompteRepository $typeCompteRepository
+    ) {
+        $this->compte_repo = $compteRepository;
+        $this->client_repo = $clientRepository;
+        $this->histo_repo = $historiqueTRepository;
+        $this->type_c_repo = $typeCompteRepository;
+    }
 
     /**
      * Cette méthode retourne le gestionnaire de connexion
@@ -18,14 +38,6 @@ class DataBaseService extends AbstractController
     public function getConnect()
     {
         return $this->db = $this->getDoctrine()->getManager();
-    }
-
-    /**
-     * Cette méthode retourne le repository de la table courante
-     */
-    public function getRepo()
-    {
-        return $this->getDoctrine()->getRepository($this->table);
     }
 
     /**
@@ -40,66 +52,9 @@ class DataBaseService extends AbstractController
         $this->db->flush();
     }
 
-    /**
-     * Cette méthode modifie les données de la table courante par son id
-     * @param $object
-     * @return void
-     */
-    public function update()
-    {
-        $this->getConnect()->flush();
-    }
-
-    /**
-     * Cette méthode affiche tous les enregistrements de la table courante
-     * @return array
-     */
-    public function getAll(): array
-    {
-        $repo = $this->repo = $this->getRepo();
-        $fetchAll = $repo->findAll();
-
-        return $fetchAll;
-    }
-
-    /**
-     * Cette méthode affiche l'id de la table courante
-     * @param integer $id
-     * @return void
-     */
-    public function getId($id)
-    {
-        $repo = $this->getRepo();
-        $fetchId = $repo->find($id);
-        return $fetchId;
-    }
-
-    /**
-     * Cette méthode supprime tous les enregistrements de la table courante
-     * @return void
-     */
-    public function deleteAll()
+    public function delete($object)
     {
         $this->db = $this->getConnect();
-        $this->repo = $this->getRepo();
-        $alldata = $this->repo->findAll();
-        foreach ($alldata as $key => $value) {
-            $this->db->remove($value);
-            //$this->db->flush();
-        }
-    }
-
-    /**
-     * Cette méthode supprime un seul enregistrement de la table courante
-     * par son id
-     * @param int $id
-     * @return void
-     */
-    public function deleteOne(int $id): void
-    {
-        $this->db = $this->getConnect();
-        $fid = $this->getId($id);
-        $this->db->remove($fid);
-        //$this->db->flush();
+        $this->db->remove($object);
     }
 }

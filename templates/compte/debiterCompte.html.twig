@@ -1,30 +1,44 @@
 {% extends "base.html.twig" %}
 {% block body %}
-<div class="row">
-    <div class="col-md-5 offset-3">
-        <form autocomplete="off" id="form" method="post" action="{{path('debiterCompteB')}}">
-            {# <div class="form-group">
-                <label for="id_retrait">Numero de Compte</label>
-                <input type="text" name="id_compte" class="form-control" id="id_compte">
-                <div class="validate"></div>
-            </div> #}
-            <div class="form-group">
-                <label for="somme">Entrer le montant</label>
-                <input type="text" name="montant" class="form-control" id="montant"  required>
-                <div class="validate"></div>
-            </div>
-        
-        
-            <div class="loading"></div>
-            <div class="error-message"></div>
-            <div class="message"></div>
-        
-            <button type="submit" class="btn btn-primary offset-2">Débiter le compte</button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Femer</button>
-        </form>
+<section class="content-wrapper">
 
+    <div class="row">
+        {% for message in app.flashes('statut_off') %}
+        <div class="alert alert-danger container text-center col-md-5 offset-3" style="margin-top: 2%;">
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-success container text-center col-md-5 offset-3">
+            {{ message }}
+        </div>
+        {% endfor %}
+        <div class="col-md-5 offset-3">
+            <form autocomplete="off" id="form" method="post" action="{{path('debiterCompteB')}}">
+                <div class="form-group">
+                    <label for="id_retrait">Numero de Compte</label>
+                    <input type="text" name="id_compte" class="form-control" id="id_compte" required>
+                    <div class="validate"></div>
+                </div>
+                <div class="form-group">
+                    <label for="somme">Entrer le montant</label>
+                    <input type="text" name="montant" class="form-control" id="montant" required>
+                    <div class="validate"></div>
+                </div>
+
+
+                <div class="loading"></div>
+                <div class="error-message"></div>
+                <div class="message"></div>
+
+                <button type="submit" class="btn btn-primary offset-2">Débiter le compte</button>
+
+            </form>
+
+        </div>
     </div>
-</div>
 
 
+</section>
 {% endblock body %}

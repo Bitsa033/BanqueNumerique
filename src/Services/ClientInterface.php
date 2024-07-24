@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Services;
 
-interface ClientInterface{
+interface ClientInterface
+{
 
-    function createData(array $data);
-    function updateData(array $data);
-    function findAllData($id);
-    function deleteOneData($id);
-
+    function creer_compte(array $data);
+    function modifier_client(array $data);
+    function afficher_client($id);
+    function supprimer_client($id);
 }

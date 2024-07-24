@@ -12,14 +12,29 @@
 	<link href="img/apple-touch-icon.png" rel="apple-touch-icon">
 	<!-- Bootstrap core CSS -->
 	<link href="dist/css/bootstrap.min.css" rel="stylesheet">
-	{# <link href="dist/css/style.css" rel="stylesheet"> #}
+	<link rel="stylesheet" href="template/dist/css/adminlte.min.css">
+	{#
+	<link href="dist/css/style.css" rel="stylesheet"> #}
 	<link href="font/fontawesome/css/all.min.css" rel="stylesheet">
-	{# <link href="font/themify-icons/css/themify-icons.css" rel="stylesheet"> #}
+	{#
+	<link href="font/themify-icons/css/themify-icons.css" rel="stylesheet"> #}
 	<link href="dist/css/sweetalert.css" rel="stylesheet">
 	<style>
-		#table th,td{border: 2px gainsboro solid;}
-		#table{border-collapse: collapse;}
-		#form{border: 3px black solid; color: green; padding: 8px; margin-top: 5px;}
+		#table th,
+		td {
+			border: 2px gainsboro solid;
+		}
+
+		#table {
+			border-collapse: collapse;
+		}
+
+		#form {
+			border: 3px black solid;
+			color: green;
+			padding: 8px;
+			margin-top: 5px;
+		}
 	</style>
 	{% block stylesheets %}
 	<!--external css-->
@@ -28,32 +43,39 @@
 
 </head>
 
-<body>
+<body class="content-wrapper">
 	{% include "layouts/navigation.html.twig" %}
 	{% block body %}{% endblock %}
 	{% include "layouts/modal.html.twig" %}
+	{#
 	<script src="dist/js//jquery.min.js"></script>
 	<script src="dist/js//bootstrap.min.js"></script>
-	<script src="dist/js/sweetalert.min.js"></script>
+	<script src="dist/js/sweetalert.min.js"></script> #}
 	{#{{ encore_entry_script_tags('app') }}#}
 	<script src="dist/js/Ajax.js"></script>
 	<script src="dist/js/navigation.js"></script>
-	
-	<script>
-		var insertClient= "{{path('insertClient')}}"
-		var updateClient= "{{path('updateClient')}}"
-		var deleteClient= "{{path('deleteClient')}}"
-		var depotCompte= "{{path('depotCompte')}}"
-		var retraitCompte= "{{path('retraitCompte')}}"
-		var virerMontant= "{{path('virerMontant')}}"
-		var index= "{{path('comptes')}}"
-		insert(insertClient,index)
-		update(updateClient,depotCompte,retraitCompte,virerMontant)
 
-		remove(deleteClient,index)
-		showClient()
+	<script>
+
 	</script>
 	{% block javascripts %}
+	<script src="template/plugins/jquery/jquery.min.js"></script>
+	<!-- jQuery UI 1.11.4 -->
+	<script src="template/plugins/jquery-ui/jquery-ui.min.js"></script>
+	<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+	<script>
+		$.widget.bridge('uibutton', $.ui.button)
+	</script>
+	<!-- Bootstrap 4 -->
+	<script src="template/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+	<!-- AdminLTE App -->
+	<script src="template/dist/js/adminlte.js"></script>
+	<!-- AdminLTE for demo purposes -->
+	<script src="template/dist/js/demo.js"></script>
+	<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+	<script src="template/dist/js/pages/dashboard.js"></script>
 	{% endblock %}
 </body>
 
