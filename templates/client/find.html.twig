@@ -3,7 +3,7 @@
 <section class="content-wrapper">
 
     <div class="row">
-        {% for message in app.flashes('statut_off') %}
+        {% for message in app.flashes('client_not_exist') %}
         <div class="alert alert-danger text-center col-md-10 offset-1" style="margin-top: 2%;">
             {{ message }}
         </div>
@@ -15,13 +15,13 @@
         </div>
         {% endfor %}
         <div class="col-md-10 offset-1">
-            <form autocomplete="off" id="form" method="post" action="{{path('activerCompteB')}}">
+            <form autocomplete="off" id="form" method="post" action="{{path('edit_client')}}">
                 <div class="form-group">
-                    <label for="id_debit">Numero de Compte</label>
-                    <input type="text" name="id_compte" class="form-control" id="id_debit" required>
+                    <label for="id_debit">Nom complet du client</label>
+                    <input type="text" name="nom" class="form-control" id="id_debit" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary offset-2">Activer</button>
+                <button type="submit" class="btn btn-primary offset-2">Suivant</button>
             </form>
 
         </div>

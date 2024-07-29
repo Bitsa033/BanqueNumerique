@@ -4,30 +4,13 @@
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
 
-            <div class="col-lg-8 col-xl-6 text-center">
 
-                <hr class="divider" />
-            </div>
         </div>
         <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
-            <div class="col-lg-10">
+            <div class="col-lg-12">
 
                 <div class="card">
                     <div class="card-header">
-                        <a href="{{path('nouveauCompte')}}" class="btn btn-primary"><i class="fa fa-plus"></i> Nouveau
-                        </a>
-
-                        <a class=" btn btn-warning" href="{{path('crediterCompte')}}"> <i class="fa fa-plus"></i>
-                            Créditer</a>
-                        <a class=" btn btn-info" href="{{path('debiterCompte')}}"> <i class="fa fa-plus"></i> Débiter
-                        </a>
-                        <a class=" btn btn-success" href="{{path('transfererArgent')}}"> <i class="fa fa-plus"></i>
-                            Virement</a>
-                        <a class=" btn btn-dark" href="{{path('bloquerCompte')}}"> <i class="fa fa-lock"></i>
-                            Geler</a>
-                        <a class=" btn btn-primary" href="{{path('activerCompte')}}"> <i class="fa fa-lock-open"></i>
-                            Activer</a>
-
 
                     </div>
                     <div class="card-header">
@@ -53,7 +36,7 @@
 
                     </div>
                     <div class="card-header">
-                        <h5 th:text="${nb} + ' Régions enregistrées'"></h5>
+                        <h5></h5>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered">
@@ -72,7 +55,7 @@
                                 {% for row in comptes %}
                                 <tr>
                                     <td>{{row.numero}}</td>
-                                    <td>{{row.solde}} FCFA</td>
+                                    <td>{{row.solde|number_format(0, ' ', ' ')}} FCFA</td>
                                     <td>{{row.type.nom}}</td>
                                     {% if row.statut==1 %}
                                     <td>Actif</td>

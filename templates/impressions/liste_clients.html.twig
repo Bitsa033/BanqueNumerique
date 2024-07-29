@@ -15,36 +15,31 @@
                     <div class="card">
 
                         <div class="card-header">
-                            Relevé Bancaire <strong> | Titulaire:</strong> {{nom_client}}
+                            Liste des clients
                         </div>
                         <div class="card-header">
-                            <h5 th:text="${nb} + ' Régions enregistrées'"></h5>
+                            <h5></h5>
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered">
 
                                 <thead>
                                     <tr>
-                                        <th>Compte</th>
-                                        <th>Solde</th>
-                                        <th>Nature</th>
-                                        <th>Statut</th>
+                                        <th>Nom</th>
+                                        <th>Email</th>
+                                        <th>Contact</th>
+                                        <th>Adresse</th>
 
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    {% for row in comptes %}
+                                    {% for row in clients %}
                                     <tr>
-                                        <td>{{row.numero}}</td>
-                                        <td>{{row.solde}} FCFA</td>
-                                        <td>{{row.type.nom}}</td>
-                                        {% if row.statut==1 %}
-                                        <td>Actif</td>
-                                        {% elseif row.statut==0 %}
-                                        <td>Bloqué</td>
-                                        {% endif %}
-
+                                        <td>{{row.nom}}</td>
+                                        <td>{{row.email}}</td>
+                                        <td>{{row.contact}}</td>
+                                        <td>{{row.adresse}}</td>
 
                                     </tr>
 

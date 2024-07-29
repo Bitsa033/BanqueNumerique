@@ -85,13 +85,18 @@ class CompteController extends CompteService
         $adresse = $pays . "-" . $ville . "-" . $quartier;
         $type_compte_req = $request->request->get('type');
         $type_compte = $this->type_c_repo->find($type_compte_req);
-        $statut = "ouvert";
-        if (!empty($nom) && !empty($email) && !empty($adresse) && !empty($contact) && !empty($contact)) {
+
+        $client_nom = $this->client_repo->findOneBy(["nom" => $nom]);
+        $client_email = $this->client_repo->findOneBy(["email" => $email]);
+        if ($client_nom == null && $client_email == null) {
+            // dd('null');
             $service->creer_compte(compact("nom", "email", "contact", "adresse", "type_compte"));
             $this->addFlash('success', 'Création du compte réussi !');
             return $this->redirect('nouveauCompte');
         } else {
-            $this->addFlash('erreur', 'Remplissez votre formulaire !');
+            // dd($compte->getNumero());
+            $this->addFlash('not_save_mismatch_client', "Nous ne pouvons pas créer le compte 
+            car le nom ou l'email renseigné se trouve déja dans notre base de données!");
             return $this->redirect('nouveauCompte');
         }
     }
@@ -111,14 +116,15 @@ class CompteController extends CompteService
         $type_compte_req = $request->request->get('type');
         $type_compte = $this->type_c_repo->find($type_compte_req);
 
-        $statut = "ouvert";
-        if (!empty($client) && !empty($type_compte_req)) {
-
+        $compte = $this->compte_repo->findOneBy(["type" => $type_compte_req, "client" => $client]);
+        if ($compte == null) {
+            // dd('null');
             $service->creer_compteB2(compact("client", "type_compte"));
             $this->addFlash('success', 'Création du compte réussi !');
             return $this->redirect('nouveauCompte');
         } else {
-            $this->addFlash('erreur', 'Remplissez votre formulaire !');
+            // dd($compte->getNumero());
+            $this->addFlash('not_save_mismatch_acount', 'Impossible de créer deux types de comptes identiques pour le meme client!');
             return $this->redirect('nouveauCompte');
         }
     }
@@ -197,11 +203,14 @@ class CompteController extends CompteService
         $numero_compte = $request->request->get("id_compte");
         $montant = $request->request->get('montant');
         $compte = $c->getIdByNumeroCompte($numero_compte);
+        $solde = $this->compte_repo->findOneBy(["numero" => $numero_compte])->getSolde();
         $id_compte = $compte->getId();
         $titulaire = $compte->getClient()->getNom();
         $statut = $compte->getStatut();
         if ($statut == 0) {
             $this->addFlash('statut_off', "Opération annuléee car ce compte est bloqué");
+        } elseif ($solde < $montant) {
+            $this->addFlash('amount_insuficient', "Opération annuléee car le solde est insuffisant!");
         } else {
             $backController->retraitCompte($id_compte, $montant);
             $this->creerHistorique($nom, $montant, $numero_compte, $titulaire);
@@ -213,23 +222,23 @@ class CompteController extends CompteService
 
     /**
      * lien pour transferer de l'argent
-     * @Route("transfererArgent", name="transfererArgent")
+     * @Route("virementBancaire", name="virementBancaire")
      */
-    function transfererArgent(): Response
+    function virementBancaire(): Response
     {
         $user = $this->getUser();
         if (!$user) {
             return $this->redirect("/");
         }
 
-        return $this->render("compte/transfererMontant.html.twig", []);
+        return $this->render("compte/virementBancaire.html.twig", []);
     }
 
     /**
      * lien pour transferer de l'argent d 'un compte à un autre
-     * @Route("transfererArgentB", name="transfererArgentB")
+     * @Route("virementBancaireB", name="virementBancaireB")
      */
-    function transfererArgentB(Request $request, BackController $backController, CompteRepository $c)
+    function virementBancaireB(Request $request, BackController $backController, CompteRepository $c)
     {
         $user = $this->getUser();
         if (!$user) {
@@ -248,9 +257,12 @@ class CompteController extends CompteService
         $titulaire_compte_credit = $compte_credit->getClient()->getNom();
         $statut_compte_debit = $compte_debit->getStatut();
         $statut_compte_credit = $compte_credit->getStatut();
+        $solde = $this->compte_repo->findOneBy(["numero" => $numero_compte_debit])->getSolde();
 
         if ($statut_compte_debit == 0  || $statut_compte_credit == 0) {
             $this->addFlash('statut_off', "Opération annuléee car l'un des comptes renseignés est bloqué");
+        } elseif ($solde < $montant) {
+            $this->addFlash('amount_insuficient', "Opération annuléee car le solde du compte du débiteur est insuffisant!");
         } else {
             $backController->virerArgent($id_compte_debit, $montant, $id_compte_credit);
             // $this->creerHistorique($data_crediteur);
@@ -259,7 +271,7 @@ class CompteController extends CompteService
             $this->addFlash('success', "Transfert éffectué");
         }
 
-        return $this->redirect("transfererArgent");
+        return $this->redirect("virementBancaire");
     }
 
     /**

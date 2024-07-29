@@ -1,18 +1,29 @@
 {% extends "base.html.twig" %}
 {% block body %}
 <section class="content-wrapper">
-    <br>
 
     <div class="row">
         <div class="col-md-12">
-            {% for message in app.flashes('statut_off') %}
-            <div class="alert alert-danger container text-center col-md-5 offset-2" style="margin-top: 2%;">
+            {% for message in app.flashes('client_not_exist') %}
+            <div class="alert alert-danger text-center col-md-10 offset-1" style="margin-top: 2%;">
+                {{ message }}
+            </div>
+            {% endfor %}
+
+            {% for message in app.flashes('not_save_mismatch_client') %}
+            <div class="alert alert-danger text-center col-md-10 offset-1" style="margin-top: 2%;">
+                {{ message }}
+            </div>
+            {% endfor %}
+
+            {% for message in app.flashes('not_save_mismatch_acount') %}
+            <div class="alert alert-danger text-center col-md-10 offset-1" style="margin-top: 2%;">
                 {{ message }}
             </div>
             {% endfor %}
 
             {% for message in app.flashes('success') %}
-            <div class="alert alert-success container text-center col-md-5 offset-2">
+            <div class="alert alert-success text-center col-md-10 offset-1">
                 {{ message }}
             </div>
             {% endfor %}
@@ -21,13 +32,13 @@
 
     <br>
     <div class="row">
-        <div class="col-md-5 offset-2 alert alert-info">
+        <div class="col-md-10 offset-1 alert alert-info">
             <p class="h3">Nouveau Client</p>
         </div>
     </div>
     <div class="row">
 
-        <div class="col-md-5 offset-2">
+        <div class="col-md-10 offset-1">
 
             <form autocomplete="off" method="post" id="form" action="{{path('nouveauCompteB')}}">
                 <div class="form-group">
@@ -39,58 +50,39 @@
 
                         {% endfor %}
                     </select>
-                    <div class="validate"></div>
-                </div>
 
-                <div class="loading"></div>
-                <div class="error-message"></div>
-                <div class="message"></div>
+                </div>
 
                 <div class="form-group">
                     <label for="">Nom complet du Client</label>
-                    <input type="text" name="nom" class="form-control" id="nom">
-                    <div class="validate"></div>
+                    <input type="text" name="nom" class="form-control" id="nom" required>
+
                 </div>
                 <div class="form-group">
                     <label for="">Email</label>
-                    <input type="text" name="email" class="form-control" id="nom">
-                    <div class="validate"></div>
+                    <input type="email" name="email" class="form-control" id="nom" required>
+
                 </div>
                 <div class="form-group">
                     <label for="">Numero de télephone</label>
                     <input type="text" name="contact" class="form-control" id="contact" required>
-                    <div class="validate"></div>
+
                 </div>
 
                 <div class="form-group">
                     <label for="">Adress / Pays</label>
                     <input type="text" name="pays" class="form-control" id="adresse" required>
-                    <div class="validate"></div>
                 </div>
-
-                <div class="loading"></div>
-                <div class="error-message"></div>
-                <div class="message"></div>
 
                 <div class="form-group">
                     <label for="">Adress / Ville</label>
                     <input type="text" name="ville" class="form-control" id="adresse" required>
-                    <div class="validate"></div>
                 </div>
-
-                <div class="loading"></div>
-                <div class="error-message"></div>
-                <div class="message"></div>
 
                 <div class="form-group">
                     <label for="">Adress / Quartier</label>
                     <input type="text" name="quartier" class="form-control" id="adresse" required>
-                    <div class="validate"></div>
                 </div>
-
-                <div class="loading"></div>
-                <div class="error-message"></div>
-                <div class="message"></div>
 
                 <button type="submit" class="btn btn-primary">Créer le compte</button>
 
@@ -101,12 +93,12 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-md-5 offset-2 alert alert-info">
+        <div class="col-md-10 offset-1 alert alert-info">
             <p class="h3">Ancien Client</p>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-5 offset-2">
+        <div class="col-md-10 offset-1">
 
             <form autocomplete="off" method="post" id="form" action="{{path('nouveauCompteB2')}}">
                 <div class="form-group">
@@ -118,7 +110,7 @@
 
                         {% endfor %}
                     </select>
-                    <div class="validate"></div>
+
                 </div>
 
                 <div class="form-group">
@@ -130,7 +122,7 @@
 
                         {% endfor %}
                     </select>
-                    <div class="validate"></div>
+
                 </div>
 
                 <button type="submit" class="btn btn-primary">Créer le compte</button>

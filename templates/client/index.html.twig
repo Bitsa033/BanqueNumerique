@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 {% block body %}
 <section class="content-wrapper" id="contact">
-	<div class="container px-4 px-lg-5">
+	<div class="container px-4 px-lg-12">
 		<div class="row gx-4 gx-lg-5 justify-content-center">
 
 			<div class="col-lg-8 col-xl-6 text-center">
@@ -10,18 +10,10 @@
 			</div>
 		</div>
 		<div class="row gx-4 gx-lg-5 justify-content-center mb-5">
-			<div class="col-lg-10">
+			<div class="col-lg-12">
 
 				<div class="card">
-					{# <div class="card-header">
 
-						<a href="" class="btn btn-warning"> <i class="fa fa-pen"></i>
-							Modifier</a>
-
-						<a href="" class="btn btn-danger"> <i class="fa fa-trash"></i>
-							Supprimer</a>
-
-					</div> #}
 					<div class="card-header">
 						<form method="get" action="">
 							<div class="form-row align-items-center">
@@ -36,8 +28,11 @@
 										Rechercher</button>
 								</div>
 								<div class="col-auto">
+									<a href="{{path('find_client')}}" class="btn btn-warning mb-2"><i
+											class="fa fa-pen"></i> Modifier</a>
 
-									<a th:href="" class="btn btn-info mb-2"><i class="fa fa-print"></i> Imprimer</a>
+									<a href="{{path('print_liste_clients')}}" class="btn btn-info mb-2"><i
+											class="fa fa-print"></i> Imprimer</a>
 								</div>
 							</div>
 						</form>
