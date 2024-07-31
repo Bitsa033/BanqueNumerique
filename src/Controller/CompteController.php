@@ -95,8 +95,7 @@ class CompteController extends CompteService
             return $this->redirect('nouveauCompte');
         } else {
             // dd($compte->getNumero());
-            $this->addFlash('not_save_mismatch_client', "Nous ne pouvons pas créer le compte 
-            car le nom ou l'email renseigné se trouve déja dans notre base de données!");
+            $this->addFlash('not_save_mismatch_client', "Erreur de création du compte car un compte de meme type est déja associé à ce client");
             return $this->redirect('nouveauCompte');
         }
     }
@@ -124,7 +123,7 @@ class CompteController extends CompteService
             return $this->redirect('nouveauCompte');
         } else {
             // dd($compte->getNumero());
-            $this->addFlash('not_save_mismatch_acount', 'Impossible de créer deux types de comptes identiques pour le meme client!');
+            $this->addFlash('not_save_mismatch_acount', 'Erreur de création du compte car un compte de meme type est déja associé à ce client');
             return $this->redirect('nouveauCompte');
         }
     }
