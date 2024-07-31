@@ -39,17 +39,21 @@ class ClientController extends DataBaseService
             return $this->redirect("/");
         }
 
-        $nom = $request->request->get("nom");
-        if (!empty($nom)) {
-            # code...
-            $nom_client = $this->client_repo->findOneBy(["nom" => $nom]);
-            $id_client = $nom_client->getId();
-
-            $sessionInterface->set("client", $id_client);
+        $client = $request->request->get("client");
+        $client_session = $sessionInterface->get("client", []);
+        if (!empty($client)) {
+            if (empty($client_session)) {
+                $sessionInterface->set("client", $client);
+                return $this->redirect("edit_client");
+                // dd($request);
+            }
+            $sessionInterface->set("client", $client);
+            return $this->redirect("edit_client");
+            // dd($request);
         }
-
-
-        return $this->render('client/find.html.twig', []);
+        return $this->render('client/find.html.twig', [
+            "clients" => $this->client_repo->findAll()
+        ]);
     }
 
     /**
@@ -58,12 +62,17 @@ class ClientController extends DataBaseService
      */
     public function edit(Request $request, SessionInterface $sessionInterface): Response
     {
-        $client = $sessionInterface->get("client", []);
-        $client_r = $this->client_repo->find($client);
+        $client_session = $sessionInterface->get("client", []);
+        if (empty($client_session)) {
+            // dd($client_session);
+        }
+        // dd($client_session);
+        $client = $this->client_repo->find($client_session);
+        // $nom_client = $client->getNom();
+        // $data = $this->histo_repo->findBy(["titulaire" => $nom_client]);
 
-        // dd($d=$clients->readOneData(8));
         return $this->render('client/edit.html.twig', [
-            'client' => $client_r
+            'client' => $client
         ]);
     }
 

@@ -348,20 +348,23 @@ class CompteController extends CompteService
      */
     function imprimer_compte_menu(Request $request, SessionInterface $sessionInterface): Response
     {
-        $user = $this->getUser();
-        if (!$user) {
-            return $this->redirect("/");
-        }
-
-        $option_impression = $request->request->get("option_impression");
+        $print_select = $request->request->get("option_impression");
         $client = $request->request->get("client");
-        if (!empty($option_impression) && !empty($client)) {
-            $sessionInterface->set("client", $client);
-            if ($option_impression == "releve_bancaire") {
-                return $this->redirect("releve_bancaire");
+        $client_session = $sessionInterface->get("client", []);
+        if (!empty($print_select) && !empty($client)) {
+            if (empty($client_session)) {
+                $sessionInterface->set("client", $client);
+                if ($print_select == "releve_bancaire") {
+                    return $this->redirect("releve_bancaire");
+                } elseif ($print_select == "releve_transactions") {
+                    return $this->redirect("releve_bancaire");
+                }
             }
-            if ($option_impression == "releve_transactions") {
-                return $this->redirect("releve_transactions");
+            $sessionInterface->set("client", $client);
+            if ($print_select == "releve_bancaire") {
+                return $this->redirect("releve_bancaire");
+            } elseif ($print_select == "releve_transactions") {
+                return $this->redirect("releve_bancaire");
             }
         }
 
@@ -380,7 +383,8 @@ class CompteController extends CompteService
             return $this->redirect("/");
         }
 
-        $client_session = $sessionInterface->get("client");
+        $client_session = $sessionInterface->get("client", []);
+        // dd($client_session);
         $client = $this->client_repo->find($client_session);
         $nom_client = $client->getNom();
         $data = $this->compte_repo->findBy(["client" => $client]);
@@ -401,7 +405,8 @@ class CompteController extends CompteService
             return $this->redirect("/");
         }
 
-        $client_session = $sessionInterface->get("client");
+        $client_session = $sessionInterface->get("client", []);
+        // dd($client_session);
         $client = $this->client_repo->find($client_session);
         $nom_client = $client->getNom();
         $data = $this->histo_repo->findBy(["titulaire" => $nom_client]);
